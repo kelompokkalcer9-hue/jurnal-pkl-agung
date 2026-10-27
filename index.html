@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jurnal PKL RPL - SMKN 2 Cipatujah</title>
+<style>
+:root{--ink:#10243a;--teal:#0f766e;--tealbg:#e3f2f0;--bg:#f2f5f8;--card:#fff;--mut:#5b6b7d;--line:#d9e1e9;--ok:#15803d;--err:#b91c1c;--amber:#b45309}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;margin:0;line-height:1.25}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px 48px}
+header{background:var(--ink);color:#fff;padding:28px 0 64px}
+header .wrap{padding-bottom:0}
+header h1{font-size:clamp(1.5rem,5vw,2.2rem)}
+header p{margin:6px 0 0;color:#b9c8d8}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+.ident{margin-top:-44px}
+.ident-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px 20px;margin:0}
+dt{font-size:.8rem;color:var(--mut)}
+dd{margin:0;font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:8px;padding:10px 14px}
+.stat b{display:block;font-size:1.6rem;font-family:Georgia,serif}
+.stat span{font-size:.85rem;color:var(--mut)}
+.tools{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:10px;align-items:end}
+.tools label{font-size:.8rem;color:var(--mut);display:block;margin-bottom:3px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+input,textarea,select{width:100%;font:inherit;color:inherit;padding:9px 11px;border:1px solid #b8c4d0;border-radius:7px;background:#fff}
+textarea{resize:vertical;min-height:84px}
+input:focus,textarea:focus,button:focus-visible{outline:3px solid #7cc4bc;outline-offset:1px;border-color:var(--teal)}
+button{font:inherit;font-weight:600;cursor:pointer;border-radius:7px;padding:9px 15px;border:1px solid transparent}
+.btn{background:var(--teal);color:#fff}.btn:hover{background:#0b5e57}
+.btn2{background:#fff;color:var(--ink);border-color:#b8c4d0}.btn2:hover{background:#eef3f7}
+.btnd{background:var(--err);color:#fff}.btnd:hover{background:#991b1b}
+.sm{padding:5px 11px;font-size:.88rem}
+.list-head{display:flex;justify-content:space-between;align-items:baseline;margin:24px 0 10px;gap:8px;flex-wrap:wrap}
+.entry{display:grid;grid-template-columns:78px 1fr;background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden;break-inside:avoid}
+.date{background:var(--tealbg);text-align:center;padding:12px 4px;border-right:1px solid var(--line)}
+.date b{display:block;font:700 1.9rem/1 Georgia,serif;color:var(--teal)}
+.date span{font-size:.78rem;color:var(--mut);display:block;margin-top:3px}
+.body{padding:12px 16px}
+.meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.time{font-weight:600;font-size:.92rem}.time small{color:var(--mut);font-weight:400}
+.f{margin:7px 0 0}.f h3{font:600 .8rem system-ui,sans-serif;color:var(--mut)}.f p{margin:1px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.empty{text-align:center;color:var(--mut);padding:36px 16px;border:2px dashed var(--line);border-radius:10px;background:#fff}
+dialog{border:0;border-radius:12px;padding:0;width:min(640px,96vw);max-height:92vh;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+dialog::backdrop{background:rgba(16,36,58,.55)}
+dialog form{padding:20px}
+dialog h2{margin-bottom:14px;font-size:1.3rem}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.fld{margin-bottom:12px}.fld label{display:block;font-size:.88rem;font-weight:600;margin-bottom:3px}
+.fld .req{color:var(--err)}
+.err{display:none;color:var(--err);font-size:.82rem;margin-top:2px}
+.fld.bad .err{display:block}.fld.bad input,.fld.bad textarea{border-color:var(--err)}
+.dfoot{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99;display:flex;flex-direction:column;gap:8px;width:min(92vw,420px)}
+.t{padding:11px 15px;border-radius:8px;color:#fff;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+.t.ok{background:var(--ok)}.t.er{background:var(--err)}
+.sign,.pnote{display:none}
+footer{text-align:center;color:var(--mut);font-size:.82rem;margin-top:28px}
+@media(max-width:720px){
+ .tools{grid-template-columns:1fr 1fr}.tools .s{grid-column:1/-1}
+ .g2,.g3{grid-template-columns:1fr}
+ .entry{grid-template-columns:62px 1fr}.body{padding:10px 12px}
+}
+@media print{
+ body{background:#fff;font-size:11pt}
+ header{background:none;color:#000;padding:0 0 8px;border-bottom:2px solid #000}
+ header p{color:#333}
+ .noprint,footer,#toast{display:none!important}
+ .ident{margin-top:10px}.panel,.stat,.entry{border:1px solid #888;box-shadow:none}
+ .date{background:#eee}.date b{color:#000}
+ .pnote{display:block;margin:6px 0;font-size:.85rem}
+ .sign{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:36px;text-align:center;break-inside:avoid}
+ .sign div{padding-top:70px}.sign span{display:block;border-top:1px solid #000;padding-top:3px}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <h1>Jurnal PKL RPL</h1>
+  <p>SMKN 2 Cipatujah · Rekayasa Perangkat Lunak</p>
+ </div>
+</header>
+
+<main class="wrap">
+ <section class="panel ident" aria-label="Identitas siswa">
+  <div class="ident-top">
+   <h2>Identitas Siswa</h2>
+   <button class="btn2 sm noprint" id="btnProfile" type="button">Ubah identitas</button>
+  </div>
+  <dl id="profileView"></dl>
+ </section>
+
+ <section class="stats" id="stats" aria-label="Rekap jurnal"></section>
+
+ <section class="panel noprint" aria-label="Pencarian dan filter">
+  <div class="tools">
+   <div class="s"><label for="q">Cari kegiatan</label><input id="q" type="search" placeholder="Ketik kata kunci..."></div>
+   <div><label for="from">Dari tanggal</label><input id="from" type="date"></div>
+   <div><label for="to">Sampai tanggal</label><input id="to" type="date"></div>
+   <button class="btn2" id="btnReset" type="button">Reset</button>
+  </div>
+  <div class="actions">
+   <button class="btn" id="btnAdd" type="button">+ Tambah jurnal</button>
+   <button class="btn2" id="btnPrint" type="button">Cetak / Simpan PDF</button>
+  </div>
+ </section>
+
+ <div class="list-head">
+  <h2>Catatan Harian</h2>
+  <span id="count" style="color:var(--mut);font-size:.9rem"></span>
+ </div>
+ <p class="pnote" id="pnote"></p>
+ <div id="list"></div>
+
+ <div class="sign">
+  <div><span>Pembimbing Industri</span><b id="sg1"></b></div>
+  <div><span>Guru Pembimbing</span><b id="sg2"></b></div>
+ </div>
+
+ <footer>Data tersimpan di browser perangkat ini (localStorage). Tidak dikirim ke server mana pun.</footer>
+</main>
+
+<dialog id="dlgJ">
+ <form id="formJ" novalidate>
+  <h2 id="dlgJTitle">Tambah jurnal</h2>
+  <div class="g3">
+   <div class="fld"><label for="j-tanggal">Tanggal <span class="req">*</span></label><input id="j-tanggal" type="date"><div class="err"></div></div>
+   <div class="fld"><label for="j-mulai">Jam mulai <span class="req">*</span></label><input id="j-mulai" type="time"><div class="err"></div></div>
+   <div class="fld"><label for="j-selesai">Jam selesai <span class="req">*</span></label><input id="j-selesai" type="time"><div class="err"></div></div>
+  </div>
+  <div class="fld"><label for="j-uraian">Uraian pekerjaan <span class="req">*</span></label><textarea id="j-uraian" placeholder="Apa yang Anda kerjakan hari ini?"></textarea><div class="err"></div></div>
+  <div class="fld"><label for="j-hasil">Hasil pembelajaran <span class="req">*</span></label><textarea id="j-hasil" placeholder="Pengetahuan atau keterampilan baru yang didapat"></textarea><div class="err"></div></div>
+  <div class="fld"><label for="j-kendala">Kendala</label><textarea id="j-kendala" placeholder="Kosongkan jika tidak ada"></textarea><div class="err"></div></div>
+  <div class="fld"><label for="j-rencana">Rencana tindak lanjut <span class="req">*</span></label><textarea id="j-rencana" placeholder="Apa yang akan dilakukan berikutnya?"></textarea><div class="err"></div></div>
+  <div class="dfoot">
+   <button class="btn2" type="button" data-close="dlgJ">Batal</button>
+   <button class="btn" type="submit">Simpan jurnal</button>
+  </div>
+ </form>
+</dialog>
+
+<dialog id="dlgP">
+ <form id="formP" novalidate>
+  <h2>Ubah identitas</h2>
+  <div class="g2">
+   <div class="fld"><label for="p-nama">Nama siswa <span class="req">*</span></label><input id="p-nama"><div class="err"></div></div>
+   <div class="fld"><label for="p-nis">NIS <span class="req">*</span></label><input id="p-nis" inputmode="numeric"><div class="err"></div></div>
+   <div class="fld"><label for="p-kelas">Kelas <span class="req">*</span></label><input id="p-kelas"><div class="err"></div></div>
+   <div class="fld"><label for="p-tempat">Tempat PKL <span class="req">*</span></label><input id="p-tempat"><div class="err"></div></div>
+   <div class="fld"><label for="p-industri">Pembimbing industri <span class="req">*</span></label><input id="p-industri"><div class="err"></div></div>
+   <div class="fld"><label for="p-guru">Guru pembimbing <span class="req">*</span></label><input id="p-guru"><div class="err"></div></div>
+   <div class="fld"><label for="p-mulai">PKL mulai <span class="req">*</span></label><input id="p-mulai" type="date"><div class="err"></div></div>
+   <div class="fld"><label for="p-selesai">PKL selesai <span class="req">*</span></label><input id="p-selesai" type="date"><div class="err"></div></div>
+  </div>
+  <div class="dfoot">
+   <button class="btn2" type="button" data-close="dlgP">Batal</button>
+   <button class="btn" type="submit">Simpan identitas</button>
+  </div>
+ </form>
+</dialog>
+
+<dialog id="dlgD">
+ <form method="dialog" style="padding:20px">
+  <h2>Hapus jurnal?</h2>
+  <p id="delInfo" style="color:var(--mut)"></p>
+  <div class="dfoot">
+   <button class="btn2" type="button" data-close="dlgD">Batal</button>
+   <button class="btnd" type="button" id="btnDelOk">Ya, hapus</button>
+  </div>
+ </form>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+var KJ='jurnalPKL.entries.v1', KP='jurnalPKL.profile.v1';
+var $=function(s){return document.querySelector(s)};
+
+var sampleProfile={nama:'Raka Pratama Putra',nis:'232410087',kelas:'XI RPL 1',tempat:'PT Nusantara Digital Solusi',industri:'Bapak Dimas Hartono, S.Kom.',guru:'Ibu Siti Nurhayati, S.Pd.',mulai:'2026-08-03',selesai:'2026-11-27'};
+var sampleEntries=[
+ {id:'s1',tanggal:'2026-10-26',mulai:'08:00',selesai:'16:00',uraian:'Membuat halaman login dan dashboard untuk aplikasi inventaris internal menggunakan HTML, CSS, dan JavaScript.',hasil:'Memahami cara membuat layout responsif dengan CSS Grid dan validasi form di sisi klien.',kendala:'Tampilan tabel pecah di layar HP.',rencana:'Menambahkan scroll horizontal pada tabel dan menguji di beberapa ukuran layar.'},
+ {id:'s2',tanggal:'2026-10-23',mulai:'08:00',selesai:'16:00',uraian:'Belajar Git dan GitHub: membuat repository, commit, branch, dan merge bersama tim pengembang.',hasil:'Dapat menggunakan alur kerja branch untuk menambah fitur tanpa merusak kode utama.',kendala:'Sempat terjadi konflik saat merge.',rencana:'Latihan menyelesaikan konflik merge dan menulis pesan commit yang jelas.'},
+ {id:'s3',tanggal:'2026-10-22',mulai:'08:00',selesai:'15:30',uraian:'Menguji fitur pendaftaran pengguna pada aplikasi klien dan mencatat bug di lembar pengujian.',hasil:'Mengenal teknik black box testing dan cara menulis laporan bug yang mudah dipahami.',kendala:'',rencana:'Membantu memperbaiki bug yang ditemukan bersama pembimbing.'}
+];
+
+function load(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){toast('Gagal menyimpan data. Penyimpanan browser mungkin penuh atau dinonaktifkan.','er');return false}}
+
+var profile=load(KP,null), entries=load(KJ,null);
+if(!profile){profile=sampleProfile;save(KP,profile)}
+if(!Array.isArray(entries)){entries=sampleEntries.slice();save(KJ,entries)}
+var editId=null, delId=null;
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function d(s){return new Date(s+'T00:00:00')}
+function fmtLong(s){return d(s).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}
+function dur(a,b){var x=a.split(':'),y=b.split(':');return ((+y[0]*60+ +y[1])-(+x[0]*60+ +x[1]))/60}
+function fmtH(h){return (Math.round(h*10)/10).toString().replace('.',',')}
+function toast(msg,type){
+ var t=document.createElement('div');t.className='t '+(type||'ok');t.textContent=msg;$('#toast').appendChild(t);
+ setTimeout(function(){t.remove()},3600);
+}
+
+function renderProfile(){
+ var rows=[['Nama',profile.nama],['NIS',profile.nis],['Kelas',profile.kelas],['Tempat PKL',profile.tempat],['Pembimbing industri',profile.industri],['Guru pembimbing',profile.guru],['Periode PKL',fmtLong(profile.mulai)+' s.d. '+fmtLong(profile.selesai)]];
+ $('#profileView').innerHTML=rows.map(function(r){return '<div><dt>'+r[0]+'</dt><dd>'+esc(r[1])+'</dd></div>'}).join('');
+ $('#sg1').textContent=profile.industri;$('#sg2').textContent=profile.guru;
+}
+
+function filtered(){
+ var q=$('#q').value.trim().toLowerCase(),f=$('#from').value,t=$('#to').value;
+ return entries.filter(function(e){
+  if(f&&e.tanggal<f)return false;
+  if(t&&e.tanggal>t)return false;
+  if(q&&[e.uraian,e.hasil,e.kendala,e.rencana].join(' ').toLowerCase().indexOf(q)<0)return false;
+  return true;
+ }).sort(function(a,b){return a.tanggal<b.tanggal?1:a.tanggal>b.tanggal?-1:(a.mulai<b.mulai?1:-1)});
+}
+
+function renderStats(){
+ var hours=entries.reduce(function(s,e){return s+dur(e.mulai,e.selesai)},0);
+ var days={};entries.forEach(function(e){days[e.tanggal]=1});
+ var items=[[entries.length,'Total jurnal'],[Object.keys(days).length,'Hari tercatat'],[fmtH(hours),'Total jam kegiatan']];
+ $('#stats').innerHTML=items.map(function(i){return '<div class="stat"><b>'+i[0]+'</b><span>'+i[1]+'</span></div>'}).join('');
+}
+
+function field(t,v){return v?'<div class="f"><h3>'+t+'</h3><p>'+esc(v)+'</p></div>':''}
+
+function renderList(){
+ var list=filtered();
+ $('#count').textContent='Menampilkan '+list.length+' dari '+entries.length+' jurnal';
+ var f=$('#from').value,t=$('#to').value;
+ $('#pnote').textContent=(f||t||$('#q').value)?'Filter aktif'+(f?' · dari '+fmtLong(f):'')+(t?' · sampai '+fmtLong(t):'')+($('#q').value?' · kata kunci "'+$('#q').value+'"':''):'';
+ if(!list.length){
+  $('#list').innerHTML='<div class="empty">'+(entries.length?'Tidak ada jurnal yang cocok dengan pencarian atau filter. Coba ubah kata kunci atau tekan Reset.':'Belum ada jurnal. Tekan "Tambah jurnal" untuk mencatat kegiatan pertama.')+'</div>';
+  return;
+ }
+ $('#list').innerHTML=list.map(function(e){
+  var dt=d(e.tanggal);
+  return '<article class="entry"><div class="date"><b>'+dt.getDate()+'</b><span>'+dt.toLocaleDateString('id-ID',{month:'short',year:'numeric'})+'</span><span>'+dt.toLocaleDateString('id-ID',{weekday:'long'})+'</span></div>'+
+  '<div class="body"><div class="meta"><div class="time">'+e.mulai+' – '+e.selesai+' <small>('+fmtH(dur(e.mulai,e.selesai))+' jam)</small></div>'+
+  '<div class="noprint"><button class="btn2 sm" type="button" data-edit="'+esc(e.id)+'">Edit</button> <button class="btn2 sm" type="button" style="color:var(--err)" data-del="'+esc(e.id)+'">Hapus</button></div></div>'+
+  field('Uraian pekerjaan',e.uraian)+field('Hasil pembelajaran',e.hasil)+field('Kendala',e.kendala||'Tidak ada kendala.')+field('Rencana tindak lanjut',e.rencana)+'</div></article>';
+ }).join('');
+}
+
+function renderAll(){renderProfile();renderStats();renderList()}
+
+/* ---------- validasi ---------- */
+function setErr(id,msg){
+ var el=$('#'+id),box=el.closest('.fld');
+ box.classList.toggle('bad',!!msg);box.querySelector('.err').textContent=msg||'';
+ el.setAttribute('aria-invalid',msg?'true':'false');
+ return !msg;
+}
+function val(id){return $('#'+id).value.trim()}
+
+function validateJ(){
+ var ok=true,first=null;
+ function chk(id,msg){var r=setErr(id,msg);if(!r&&!first)first=id;ok=ok&&r}
+ chk('j-tanggal',!val('j-tanggal')?'Tanggal wajib diisi.':(val('j-tanggal')>today()?'Tanggal tidak boleh di masa depan.':''));
+ chk('j-mulai',!val('j-mulai')?'Jam mulai wajib diisi.':'');
+ chk('j-selesai',!val('j-selesai')?'Jam selesai wajib diisi.':(val('j-mulai')&&val('j-selesai')<=val('j-mulai')?'Jam selesai harus setelah jam mulai.':''));
+ chk('j-uraian',val('j-uraian').length<10?'Uraian pekerjaan minimal 10 karakter.':'');
+ chk('j-hasil',val('j-hasil').length<10?'Hasil pembelajaran minimal 10 karakter.':'');
+ chk('j-rencana',val('j-rencana').length<5?'Rencana tindak lanjut minimal 5 karakter.':'');
+ if(first)$('#'+first).focus();
+ return ok;
+}
+function validateP(){
+ var ok=true,first=null;
+ function chk(id,msg){var r=setErr(id,msg);if(!r&&!first)first=id;ok=ok&&r}
+ ['nama','nis','kelas','tempat','industri','guru'].forEach(function(k){chk('p-'+k,val('p-'+k).length<2?'Kolom ini wajib diisi.':'')});
+ if(val('p-nis')&&!/^\d{4,}$/.test(val('p-nis')))chk('p-nis','NIS harus berupa angka (minimal 4 digit).');
+ chk('p-mulai',!val('p-mulai')?'Tanggal mulai wajib diisi.':'');
+ chk('p-selesai',!val('p-selesai')?'Tanggal selesai wajib diisi.':(val('p-mulai')&&val('p-selesai')<val('p-mulai')?'Tanggal selesai tidak boleh sebelum tanggal mulai.':''));
+ if(first)$('#'+first).focus();
+ return ok;
+}
+function today(){var n=new Date();return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0')}
+function clearErr(form){form.querySelectorAll('.fld').forEach(function(b){b.classList.remove('bad')})}
+
+/* ---------- dialog jurnal ---------- */
+function openJ(id){
+ editId=id||null;clearErr($('#formJ'));
+ var e=id?entries.filter(function(x){return x.id===id})[0]:null;
+ $('#dlgJTitle').textContent=e?'Edit jurnal':'Tambah jurnal';
+ $('#j-tanggal').value=e?e.tanggal:today();
+ $('#j-mulai').value=e?e.mulai:'08:00';
+ $('#j-selesai').value=e?e.selesai:'16:00';
+ $('#j-uraian').value=e?e.uraian:'';
+ $('#j-hasil').value=e?e.hasil:'';
+ $('#j-kendala').value=e?e.kendala:'';
+ $('#j-rencana').value=e?e.rencana:'';
+ $('#dlgJ').showModal();
+}
+$('#formJ').addEventListener('submit',function(ev){
+ ev.preventDefault();
+ if(!validateJ()){toast('Jurnal belum disimpan. Periksa kolom yang ditandai merah.','er');return}
+ var data={tanggal:val('j-tanggal'),mulai:val('j-mulai'),selesai:val('j-selesai'),uraian:val('j-uraian'),hasil:val('j-hasil'),kendala:val('j-kendala'),rencana:val('j-rencana')};
+ var backup=entries.slice(),isEdit=!!editId;
+ if(isEdit){entries=entries.map(function(x){return x.id===editId?Object.assign({id:x.id},data):x})}
+ else{data.id='j'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);entries.push(data)}
+ if(!save(KJ,entries)){entries=backup;return}
+ $('#dlgJ').close();renderAll();
+ toast(isEdit?'Jurnal berhasil diperbarui.':'Jurnal berhasil ditambahkan.');
+});
+
+/* ---------- dialog identitas ---------- */
+$('#btnProfile').addEventListener('click',function(){
+ clearErr($('#formP'));
+ ['nama','nis','kelas','tempat','industri','guru','mulai','selesai'].forEach(function(k){$('#p-'+k).value=profile[k]});
+ $('#dlgP').showModal();
+});
+$('#formP').addEventListener('submit',function(ev){
+ ev.preventDefault();
+ if(!validateP()){toast('Identitas belum disimpan. Periksa kolom yang ditandai merah.','er');return}
+ var np={};['nama','nis','kelas','tempat','industri','guru','mulai','selesai'].forEach(function(k){np[k]=val('p-'+k)});
+ if(!save(KP,np))return;
+ profile=np;$('#dlgP').close();renderAll();toast('Identitas berhasil disimpan.');
+});
+
+/* ---------- hapus ---------- */
+$('#btnDelOk').addEventListener('click',function(){
+ var backup=entries.slice();
+ entries=entries.filter(function(x){return x.id!==delId});
+ if(!save(KJ,entries)){entries=backup;return}
+ $('#dlgD').close();renderAll();toast('Jurnal berhasil dihapus.');
+});
+
+/* ---------- event umum ---------- */
+$('#btnAdd').addEventListener('click',function(){openJ()});
+$('#btnPrint').addEventListener('click',function(){
+ if(!entries.length){toast('Belum ada jurnal untuk dicetak.','er');return}
+ if(!filtered().length){toast('Tidak ada jurnal pada hasil filter saat ini.','er');return}
+ window.print();
+});
+$('#btnReset').addEventListener('click',function(){
+ $('#q').value='';$('#from').value='';$('#to').value='';renderList();toast('Pencarian dan filter direset.');
+});
+['q','from','to'].forEach(function(id){$('#'+id).addEventListener('input',renderList)});
+$('#from').addEventListener('change',function(){
+ if($('#to').value&&$('#from').value>$('#to').value){toast('Tanggal "dari" melewati tanggal "sampai".','er')}
+});
+$('#list').addEventListener('click',function(ev){
+ var b=ev.target.closest('button');if(!b)return;
+ if(b.dataset.edit)openJ(b.dataset.edit);
+ if(b.dataset.del){
+  delId=b.dataset.del;
+  var e=entries.filter(function(x){return x.id===delId})[0];
+  if(e){$('#delInfo').textContent='Jurnal tanggal '+fmtLong(e.tanggal)+' akan dihapus permanen dari perangkat ini.';$('#dlgD').showModal()}
+ }
+});
+document.addEventListener('click',function(ev){
+ var b=ev.target.closest('[data-close]');
+ if(b)document.getElementById(b.dataset.close).close();
+});
+window.addEventListener('beforeprint',function(){document.title='Jurnal PKL - '+profile.nama});
+window.addEventListener('afterprint',function(){document.title='Jurnal PKL RPL - SMKN 2 Cipatujah'});
+
+renderAll();
+})();
+</script>
+</body>
+</html>
